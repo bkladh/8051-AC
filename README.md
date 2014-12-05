@@ -3,7 +3,7 @@
 This project was done as a minor project for fulfillment of Bachelors degree in Electronics and Communication engineering.
 
 ## Author
-Bikal Adhikari
+Bikal Adhikari[http://adhikaribikal.com.np]
 
 ## College
 Western Region Campus, 
