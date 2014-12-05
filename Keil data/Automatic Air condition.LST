@@ -1,0 +1,1489 @@
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 1   
+
+
+C51 COMPILER V8.12, COMPILATION OF MODULE AUTOMATIC_AIR_CONDITION
+OBJECT MODULE PLACED IN Automatic Air condition.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE Automatic Air condition.c ROM(SMALL) BROWSE DEBUG OBJECTEXTEND CODE LISTINC
+                    -LUDE SYMBOLS PREPRINT
+
+line level    source
+
+   1          /****************************************************
+   2          Programmer:Bikal Adhikari                           *
+   3          Designation:Student                                 * 
+   4          Compiled on:Keil uVision C51 compiler under Win 8 OS* 
+   5          Program for:Temperature Controlled Automatic        *
+   6                      Air Conditioning System                 *  
+   7                      (Appropriate for BEX Minor Project)     *
+   8          *****************************************************/
+   9          
+  10          #include<reg51.h> /*Instructing Preprocessor to add header file reg51.h to use the features of 8051 C Prog
+             -ramming*/
+   1      =1  /*--------------------------------------------------------------------------
+   2      =1  REG51.H
+   3      =1  
+   4      =1  Header file for generic 80C51 and 80C31 microcontroller.
+   5      =1  Copyright (c) 1988-2002 Keil Elektronik GmbH and Keil Software, Inc.
+   6      =1  All rights reserved.
+   7      =1  --------------------------------------------------------------------------*/
+   8      =1  
+   9      =1  #ifndef __REG51_H__
+  10      =1  #define __REG51_H__
+  11      =1  
+  12      =1  /*  BYTE Register  */
+  13      =1  sfr P0   = 0x80;
+  14      =1  sfr P1   = 0x90;
+  15      =1  sfr P2   = 0xA0;
+  16      =1  sfr P3   = 0xB0;
+  17      =1  sfr PSW  = 0xD0;
+  18      =1  sfr ACC  = 0xE0;
+  19      =1  sfr B    = 0xF0;
+  20      =1  sfr SP   = 0x81;
+  21      =1  sfr DPL  = 0x82;
+  22      =1  sfr DPH  = 0x83;
+  23      =1  sfr PCON = 0x87;
+  24      =1  sfr TCON = 0x88;
+  25      =1  sfr TMOD = 0x89;
+  26      =1  sfr TL0  = 0x8A;
+  27      =1  sfr TL1  = 0x8B;
+  28      =1  sfr TH0  = 0x8C;
+  29      =1  sfr TH1  = 0x8D;
+  30      =1  sfr IE   = 0xA8;
+  31      =1  sfr IP   = 0xB8;
+  32      =1  sfr SCON = 0x98;
+  33      =1  sfr SBUF = 0x99;
+  34      =1  
+  35      =1  
+  36      =1  /*  BIT Register  */
+  37      =1  /*  PSW   */
+  38      =1  sbit CY   = 0xD7;
+  39      =1  sbit AC   = 0xD6;
+  40      =1  sbit F0   = 0xD5;
+  41      =1  sbit RS1  = 0xD4;
+  42      =1  sbit RS0  = 0xD3;
+  43      =1  sbit OV   = 0xD2;
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 2   
+
+  44      =1  sbit P    = 0xD0;
+  45      =1  
+  46      =1  /*  TCON  */
+  47      =1  sbit TF1  = 0x8F;
+  48      =1  sbit TR1  = 0x8E;
+  49      =1  sbit TF0  = 0x8D;
+  50      =1  sbit TR0  = 0x8C;
+  51      =1  sbit IE1  = 0x8B;
+  52      =1  sbit IT1  = 0x8A;
+  53      =1  sbit IE0  = 0x89;
+  54      =1  sbit IT0  = 0x88;
+  55      =1  
+  56      =1  /*  IE   */
+  57      =1  sbit EA   = 0xAF;
+  58      =1  sbit ES   = 0xAC;
+  59      =1  sbit ET1  = 0xAB;
+  60      =1  sbit EX1  = 0xAA;
+  61      =1  sbit ET0  = 0xA9;
+  62      =1  sbit EX0  = 0xA8;
+  63      =1  
+  64      =1  /*  IP   */ 
+  65      =1  sbit PS   = 0xBC;
+  66      =1  sbit PT1  = 0xBB;
+  67      =1  sbit PX1  = 0xBA;
+  68      =1  sbit PT0  = 0xB9;
+  69      =1  sbit PX0  = 0xB8;
+  70      =1  
+  71      =1  /*  P3  */
+  72      =1  sbit RD   = 0xB7;
+  73      =1  sbit WR   = 0xB6;
+  74      =1  sbit T1   = 0xB5;
+  75      =1  sbit T0   = 0xB4;
+  76      =1  sbit INT1 = 0xB3;
+  77      =1  sbit INT0 = 0xB2;
+  78      =1  sbit TXD  = 0xB1;
+  79      =1  sbit RXD  = 0xB0;
+  80      =1  
+  81      =1  /*  SCON  */
+  82      =1  sbit SM0  = 0x9F;
+  83      =1  sbit SM1  = 0x9E;
+  84      =1  sbit SM2  = 0x9D;
+  85      =1  sbit REN  = 0x9C;
+  86      =1  sbit TB8  = 0x9B;
+  87      =1  sbit RB8  = 0x9A;
+  88      =1  sbit TI   = 0x99;
+  89      =1  sbit RI   = 0x98;
+  90      =1  
+  91      =1  #endif
+  11          #define MYDATA P3 /*Defining Port 3 as "MYDATA" Function:To input the digital data from ADC*/
+  12          #define ldata P1  /*Defining Port 1 as data pins for lcd as ldata,Function:To output data to LCD*/
+  13          #define FL3i 35   /*Defining set of constants for the temperature limits*/
+  14          #define FL2ii 35  /*This approach makes changing the temperature limits very easy*/
+  15          #define FL2i 30   /*This prevents from going deeper into the code.*/
+  16          #define FL1ii 30
+  17          #define FL1i 25
+  18          #define NLii 25
+  19          #define NLi 20
+  20          #define HL1i 20
+  21          #define HL1ii 10
+  22          #define HL2i 10
+  23          #define HL2ii 00
+  24          
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 3   
+
+  25          
+  26          
+  27          sbit rd=P2^5;     /*Configuring P2.5 with identifier rd,Function:To send read command to ADC*/
+  28          sbit wr=P2^4;     /*Configuring P2.4 with identifier wr,Function:To send write command to ADC*/
+  29          sbit INTR=P2^3;   /*Configuring P2.3 with identifier INTR,Function:To detect start and end of conversion b
+             -y ADC*/
+  30          sbit rs=P2^0;     /*Configuring P2.0 to give a value to RS register of LCD*/
+  31          sbit rw=P2^1;     /*Configuring P2.1 to give a value to RW register of LCD*/
+  32          sbit en=P2^2;     /*Configuring P2.2 to give a value to EN register of LCD*/
+  33          sbit MTR=P2^6;    /*Configuring P2.6 to give a Pulse width modulated signal to Motor Control Circuitry*/
+  34          sbit HTR1=P0^0;   /*Configuring P0.0 as a output line for led which is used as prototype model for heater*
+             -/
+  35          sbit HTR2=P0^1;   /*Configuring P0.0 as a output line for led which is used as prototype model for heater*
+             -/
+  36          sbit busy=P1^7;   /*Configuring P1.7,8th bit of ldata or P1 with identifier busy,Function:To know whether 
+             -*/
+  37          
+  38          /*Following are set of functions required by the main routine.
+  39            It is to be noted that function protoype are not used.
+  40            Instead functions are directly implemented along with their definitions.
+  41            While doing so proper function ordering should be made otherwise compiler 
+  42            will generate error.For example:Most of the functions in program calls msDelay() function 
+  43            ,and if msDealy() function is kept below the one calling it,compiler will generate error.*/
+  44          
+  45          void msDelay(unsigned int value){ /*Provides delay in Miliseconds equal to the argument provided.Note that
+             - the choice of loop parameter 1275 is 
+  46   1                                         completely determined by the inernal design of Compiler and may vary fr
+             -om Compiler to Compiler.*/
+  47   1      unsigned int x,y;
+  48   1      for(x=0;x<value;x++)
+  49   1          for(y=0;y<1275;y++);  /*; is kept because second for loop is written as a single line statement*/
+  50   1      }
+  51          
+  52          
+  53          void lcdReady(){  /*Checks if LCD controller is busy or not and waits till not busy if it is busy*/
+  54   1      busy=1;
+  55   1      rs=0;
+  56   1      rw=1;
+  57   1      while(busy==1)
+  58   1      {
+  59   2      en=0;
+  60   2      en=1;
+  61   2      }
+  62   1      return;
+  63   1      }
+  64          
+  65          void lcdCmd(unsigned char value){ /*Gives command to LCD*/
+  66   1      lcdReady();/*Calls to check for busy flag*/
+  67   1      ldata=value;
+  68   1      rs=0;
+  69   1      rw=0;/*To appreciate why these values are enforced,one needs to have basic understanding*/
+  70   1      en=1;/*of LCD controller internal operations for read,write etc.*/
+  71   1      en=0;
+  72   1      return;
+  73   1      }
+  74          
+  75          
+  76          void lcdInit(){ /*Initializes LCD.Whenever initialization is necessary this function is called.*/
+  77   1      lcdCmd(0x38);
+  78   1      lcdCmd(0x0c);
+  79   1      lcdCmd(0x01);
+  80   1      lcdCmd(0x80);
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 4   
+
+  81   1      return;
+  82   1      }
+  83          
+  84          void lcdData(char value){ /*To give data to LCD controller for display.*/
+  85   1      ldata=value;
+  86   1      rs=1;
+  87   1      rw=0;
+  88   1      en=1;
+  89   1      en=0;
+  90   1      return;
+  91   1      }
+  92          
+  93          void display(char d1,char d2){
+  94   1          lcdData(d2);
+  95   1              msDelay(30);
+  96   1              msDelay(30);
+  97   1              lcdData(d1);
+  98   1              msDelay(30);
+  99   1              msDelay(' ');
+ 100   1              msDelay(30);
+ 101   1              lcdData('C');
+ 102   1      }
+ 103          
+ 104          
+ 105          
+ 106          void convert(char value){/*Converts data from binary to ASCII code.*/
+ 107   1          char y,d1,d2,d3;
+ 108   1              y=value/10;
+ 109   1              d1=value%10;
+ 110   1              d2=y%10;
+ 111   1              d3=y/10;
+ 112   1              d1=d1|0x30;
+ 113   1              d2=d2|0x30;
+ 114   1              d3=d3|0x30;
+ 115   1              display(d1,d2);/*d3 will be needed only if temperature exceeds 100 degree celcius.
+ 116   1                               If needed it can be added in this call and in function definition
+ 117   1                               as well as body of display().Here it is not included so as to 
+ 118   1                               eliminate redundant digit in the display.*/
+ 119   1       }
+ 120          
+ 121           void update(char value){/*Updates the data in lcd if data is changed and is within the range.*/
+ 122   1          char y,d1,d2,d3;     /*Other method would also apply to update data*/
+ 123   1              y=value/10;      /*But I thought this to be the easy and elegant approach.*/
+ 124   1              d1=value%10;
+ 125   1              d2=y%10;
+ 126   1              d3=y/10;
+ 127   1              d1=d1|0x30;
+ 128   1              d2=d2|0x30;
+ 129   1              d3=d3|0x30;
+ 130   1              lcdData(d2);
+ 131   1              msDelay(30);
+ 132   1              msDelay(30);
+ 133   1              lcdData(d1);
+ 134   1              msDelay(30);
+ 135   1              lcdCmd(0xc0);
+ 136   1       }
+ 137          
+ 138          
+ 139          
+ 140          char adcRead(){/*Reads data from ADC and returns a value in binary format.*/
+ 141   1      char value;
+ 142   1      wr=0;/*Gives LO-HI pulse to ADC to Start the conversion process.*/
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 5   
+
+ 143   1      wr=1;
+ 144   1      while(INTR==1);/*Waits till data has been converted by ADC.*/
+ 145   1      rd=0;/*Gives LO-HI pulse to ADC to read the data converted by ADC*/
+ 146   1      value=MYDATA;/*Receiving the converted data into the port 3 of uC*/ 
+ 147   1      rd=1;/*End of LO-HI transition.*/
+ 148   1      return value;
+ 149   1      }
+ 150          
+ 151          
+ 152          void motorcontrol(){
+ 153   1               unsigned char i;
+ 154   1               unsigned char value;
+ 155   1               unsigned char x[6]="TEMPR:";/*This Section consists Set of Strings defined for purpose of display in LCD
+             -*/
+ 156   1               unsigned char x1[5]="FANON";/*TEMPR: means Temperature,HTRON means Heater On*/
+ 157   1               unsigned char x2[5]="HTRON";/*HTRON meansHeater on.*/
+ 158   1               unsigned char y[12]="SPEED:LEVEL";
+ 159   1               unsigned char z[11]="HEAT:LEVEL";
+ 160   1               unsigned char u1[5]="NORM.";/*NORM. means Normal.*/
+ 161   1               unsigned char u2[11]="FAN,HTR OFF";/*FAN,HTR OFF means FAN and Heater both off.*/
+ 162   1               
+ 163   1      while(1){  /*Infinite loop is made because of the absence of Operating System.
+ 164   2                  Because there is no operating system to return to*/
+ 165   2              value=adcRead(); /*read data from adc*/
+ 166   2          if(value<20){ /*Heater on logic ,confirms to turn on the heater*/     
+ 167   3           lcdCmd(0x01);   /*clear display*/
+ 168   3               for(i=0;i<6;i++) /*display string TEMPR: */
+ 169   3           {
+ 170   4           msDelay(50);
+ 171   4           lcdData(x[i]);
+ 172   4           }
+ 173   3               convert(value); /*convert data and display*/
+ 174   3               lcdCmd(0x8b);                                   
+ 175   3               for(i=0;i<5;i++){ /*display HTRON message*/
+ 176   4               msDelay(30);
+ 177   4               lcdData(x2[i]);
+ 178   4               }
+ 179   3               
+ 180   3           while(value>HL1ii && value<HL1i){ /*level 1 heat for heater*/
+ 181   4             MTR=1;  
+ 182   4                 HTR2=1;
+ 183   4                 HTR1=0;
+ 184   4                 msDelay(1);
+ 185   4                 z[10]='1';
+ 186   4                 lcdCmd(0xc0);
+ 187   4                 for(i=0;i<11;i++){
+ 188   5                  msDelay(30);
+ 189   5                  lcdData(z[i]);
+ 190   5                  }
+ 191   4                 bkl5:
+ 192   4                 value=adcRead();
+ 193   4                 if(value>HL1ii && value<HL1i){
+ 194   5                  lcdCmd(0x86);
+ 195   5                  update(value);
+ 196   5                 goto bkl5;
+ 197   5                 }
+ 198   4                 else
+ 199   4                 break;
+ 200   4                 } /*While closed*/
+ 201   3               
+ 202   3          while(value>=HL2ii && value<=HL2i){ /*level 2 heat for heater*/
+ 203   4            MTR=1;
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 6   
+
+ 204   4                HTR1=0;
+ 205   4                msDelay(30);
+ 206   4                HTR2=0;
+ 207   4                msDelay(1);
+ 208   4                lcdCmd(0xc0);
+ 209   4                z[10]='2';
+ 210   4                for(i=0;i<11;i++){
+ 211   5                  msDelay(30);
+ 212   5                  lcdData(z[i]);
+ 213   5                  }
+ 214   4                bkl6:
+ 215   4                value=adcRead();
+ 216   4                if(value>=HL2ii && value<=HL2i){
+ 217   5                  lcdCmd(0x86);
+ 218   5                  update(value);
+ 219   5                  goto bkl6;
+ 220   5                 }
+ 221   4                else
+ 222   4                break;
+ 223   4                } /*While closed*/
+ 224   3                 
+ 225   3      
+ 226   3         } /*Heater on logic closed*/
+ 227   2         
+ 228   2         
+ 229   2         while(value>=NLi&&value<NLii){ /*Normal state logic*/
+ 230   3           HTR1=1;
+ 231   3               HTR2=1;
+ 232   3               MTR=1;
+ 233   3               lcdCmd(0x01); /*clear display*/
+ 234   3               for(i=0;i<6;i++){ /*display TEMPR:*/
+ 235   4           msDelay(50);
+ 236   4           lcdData(x[i]);
+ 237   4            }
+ 238   3               convert(value); /*convert data and display*/
+ 239   3               for(i=0;i<5;i++){
+ 240   4               msDelay(30);
+ 241   4               lcdData(u1[i]);
+ 242   4               }
+ 243   3           lcdCmd(0xc0);
+ 244   3               for(i=0;i<11;i++){
+ 245   4               msDelay(30);
+ 246   4               lcdData(u2[i]);
+ 247   4               }
+ 248   3               bklbkl:
+ 249   3               value=adcRead();
+ 250   3               if(value>=NLi&&value<NLii){
+ 251   4                lcdCmd(0x86);
+ 252   4                update(value);
+ 253   4                goto bklbkl;
+ 254   4                }
+ 255   3           else
+ 256   3               break;
+ 257   3         }
+ 258   2          
+ 259   2          
+ 260   2              
+ 261   2              if(value>=25) /*fan on logic,first confirms the situation to turn on fan*/
+ 262   2              {
+ 263   3               HTR1=1;
+ 264   3               HTR2=1;
+ 265   3               lcdCmd(0x01); /*clear display*/
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 7   
+
+ 266   3               for(i=0;i<6;i++) /*display TEMPR:*/
+ 267   3           {
+ 268   4           msDelay(50);
+ 269   4           lcdData(x[i]);
+ 270   4           }
+ 271   3               convert(value); /*convert data and display*/
+ 272   3               lcdCmd(0x8b);
+ 273   3               for(i=0;i<5;i++)
+ 274   3               {
+ 275   4               msDelay(30);
+ 276   4               lcdData(x1[i]);
+ 277   4               }
+ 278   3      
+ 279   3      
+ 280   3      
+ 281   3               
+ 282   3           while(value>=FL1i && value<FL1ii){ /*level 1 speed for fan*/
+ 283   4                lcdCmd(0xc0);
+ 284   4                y[11]='1';
+ 285   4                for(i=0;i<12;i++){
+ 286   5                  msDelay(30);
+ 287   5                  lcdData(y[i]);
+ 288   5                 }
+ 289   4                bkl1:
+ 290   4                MTR=0;
+ 291   4            msDelay(50);
+ 292   4            MTR=1;
+ 293   4            msDelay(50);
+ 294   4                value=adcRead();
+ 295   4                if(value>=FL1i && value<FL1ii){   
+ 296   5                lcdCmd(0x86);
+ 297   5                update(value);
+ 298   5                goto bkl1;
+ 299   5                }
+ 300   4                else
+ 301   4                break;
+ 302   4                 
+ 303   4                } /*level 1 speed logic closed*/
+ 304   3               
+ 305   3      
+ 306   3      
+ 307   3           while(value>=FL2i && value<FL2ii){ /*level 2 speed for fan*/
+ 308   4                y[11]='2';
+ 309   4                lcdCmd(0xc0);
+ 310   4                for(i=0;i<12;i++){
+ 311   5                  msDelay(30);
+ 312   5                  lcdData(y[i]);
+ 313   5                 }
+ 314   4                bkl2:
+ 315   4                MTR=0;
+ 316   4            msDelay(75);
+ 317   4            MTR=1;
+ 318   4            msDelay(25);
+ 319   4            value=adcRead();
+ 320   4                if(value>=FL2i && value<FL2ii){
+ 321   5                  lcdCmd(0x86);
+ 322   5                  update(value);
+ 323   5                  goto bkl2;
+ 324   5                 }
+ 325   4                else
+ 326   4                break;
+ 327   4                } /*level 2 speed logic closed*/
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 8   
+
+ 328   3      
+ 329   3      
+ 330   3                 
+ 331   3               while(value>=FL3i){ /*level 3 speed for fan*/
+ 332   4                y[11]='3';
+ 333   4                lcdCmd(0xc0);
+ 334   4                for(i=0;i<12;i++){
+ 335   5                  msDelay(30);
+ 336   5                  lcdData(y[i]);
+ 337   5                 }
+ 338   4                bkl3:
+ 339   4                MTR=0;
+ 340   4                value=adcRead();
+ 341   4                if(value>=FL3i){
+ 342   5                  lcdCmd(0x86);
+ 343   5                  update(value);
+ 344   5                  goto bkl3;
+ 345   5                 }
+ 346   4                else
+ 347   4                break;
+ 348   4                } /*level 3 speed logic closed*/
+ 349   3      
+ 350   3      
+ 351   3                 
+ 352   3           } /*if statement closed i.e fan on logic closed*/
+ 353   2         }  
+ 354   1      }  
+ 355          
+ 356            void main(){ /*Main function starts.Execution begins from here.*/
+ 357   1         P0=0xff;      /*Setting all pins of P0 to 1s to make it as output port in negative logic*/
+ 358   1         MYDATA=0xff; /*Setting all pins of P3 to 1s to make it as input port in positive logic*/
+ 359   1         INTR=1;/*Active low signal therefore initialized as high.*/
+ 360   1         rd=1;/*Active low signal therefore initialized as high.*/
+ 361   1         wr=1;/*Active low signal therefore initialized as high.*/
+ 362   1         MTR=1;/*Active low is required to drive optocoupler,so initialized as high.*/
+ 363   1         HTR1=0;/*To give a blink effect during a startup to show they are functioning and*/
+ 364   1         HTR2=0;/*leds are used as prototype for heater and are connected in active low configuration.*/
+ 365   1         msDelay(50);
+ 366   1         HTR1=1;/*After 50ms of delay Leds are turned off by high output.*/
+ 367   1         HTR2=1;
+ 368   1         lcdInit();/*Initializes LCD with appropriate Display Setting*/
+ 369   1         motorcontrol();/*Calls motorcontrol() subroutine*/
+ 370   1         } /*main function closed*/
+ 371          
+ 372          
+ 373                                                                                    
+ 374          
+ 375          
+ 376          
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 9   
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION L?0097 (BEGIN)
+0000 1100        R     ACALL   _lcdData
+0002         L?0098:
+0002 7F1E              MOV     R7,#01EH
+0004 7E00              MOV     R6,#00H
+             ; FUNCTION _msDelay (BEGIN)
+                                           ; SOURCE LINE # 45
+;---- Variable 'value' assigned to Register 'R6/R7' ----
+                                           ; SOURCE LINE # 48
+;---- Variable 'x' assigned to Register 'R4/R5' ----
+0006 E4                CLR     A
+0007 FD                MOV     R5,A
+0008 FC                MOV     R4,A
+0009         ?C0001:
+0009 C3                CLR     C
+000A ED                MOV     A,R5
+000B 9F                SUBB    A,R7
+000C EC                MOV     A,R4
+000D 9E                SUBB    A,R6
+000E 5015              JNC     ?C0007
+                                           ; SOURCE LINE # 49
+;---- Variable 'y' assigned to Register 'R2/R3' ----
+0010 E4                CLR     A
+0011 FB                MOV     R3,A
+0012 FA                MOV     R2,A
+0013         ?C0004:
+0013 0B                INC     R3
+0014 BB0001            CJNE    R3,#00H,?C0092
+0017 0A                INC     R2
+0018         ?C0092:
+0018 BA04F8            CJNE    R2,#04H,?C0004
+001B BBFBF5            CJNE    R3,#0FBH,?C0004
+001E         ?C0003:
+001E 0D                INC     R5
+001F BD0001            CJNE    R5,#00H,?C0093
+0022 0C                INC     R4
+0023         ?C0093:
+0023 80E4              SJMP    ?C0001
+                                           ; SOURCE LINE # 50
+0025         ?C0007:
+0025 22                RET     
+             ; FUNCTION _msDelay (END)
+
+             ; FUNCTION lcdReady (BEGIN)
+                                           ; SOURCE LINE # 53
+                                           ; SOURCE LINE # 54
+0000 D297              SETB    busy
+                                           ; SOURCE LINE # 55
+0002 C2A0              CLR     rs
+                                           ; SOURCE LINE # 56
+0004 D2A1              SETB    rw
+0006         ?C0008:
+                                           ; SOURCE LINE # 57
+0006 309706            JNB     busy,?C0010
+                                           ; SOURCE LINE # 58
+                                           ; SOURCE LINE # 59
+0009 C2A2              CLR     en
+                                           ; SOURCE LINE # 60
+000B D2A2              SETB    en
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 10  
+
+                                           ; SOURCE LINE # 61
+000D 80F7              SJMP    ?C0008
+                                           ; SOURCE LINE # 63
+000F         ?C0010:
+000F 22                RET     
+             ; FUNCTION lcdReady (END)
+
+             ; FUNCTION _lcdCmd (BEGIN)
+                                           ; SOURCE LINE # 65
+;---- Variable 'value' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 66
+0000 1100        R     ACALL   lcdReady
+                                           ; SOURCE LINE # 67
+0002 8F90              MOV     P1,R7
+                                           ; SOURCE LINE # 68
+0004 C2A0              CLR     rs
+                                           ; SOURCE LINE # 69
+0006 C2A1              CLR     rw
+                                           ; SOURCE LINE # 70
+0008 D2A2              SETB    en
+                                           ; SOURCE LINE # 71
+000A C2A2              CLR     en
+                                           ; SOURCE LINE # 73
+000C         ?C0011:
+000C 22                RET     
+             ; FUNCTION _lcdCmd (END)
+
+             ; FUNCTION lcdInit (BEGIN)
+                                           ; SOURCE LINE # 76
+                                           ; SOURCE LINE # 77
+0000 7F38              MOV     R7,#038H
+0002 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 78
+0004 7F0C              MOV     R7,#0CH
+0006 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 79
+0008 7F01              MOV     R7,#01H
+000A 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 80
+000C 7F80              MOV     R7,#080H
+000E 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 82
+0010         ?C0012:
+0010 22                RET     
+             ; FUNCTION lcdInit (END)
+
+             ; FUNCTION L?0094 (BEGIN)
+0000         L?0095:
+0000 7F32              MOV     R7,#032H
+0002 7E00              MOV     R6,#00H
+0004 1100        R     ACALL   _msDelay
+0006 7400        R     MOV     A,#LOW x
+0008         L?0096:
+0008 2500        R     ADD     A,i
+000A F8                MOV     R0,A
+000B E6                MOV     A,@R0
+000C FF                MOV     R7,A
+             ; FUNCTION _lcdData (BEGIN)
+                                           ; SOURCE LINE # 84
+;---- Variable 'value' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 85
+000D 8F90              MOV     P1,R7
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 11  
+
+                                           ; SOURCE LINE # 86
+000F D2A0              SETB    rs
+                                           ; SOURCE LINE # 87
+0011 C2A1              CLR     rw
+                                           ; SOURCE LINE # 88
+0013 D2A2              SETB    en
+                                           ; SOURCE LINE # 89
+0015 C2A2              CLR     en
+                                           ; SOURCE LINE # 91
+0017         ?C0013:
+0017 22                RET     
+             ; FUNCTION _lcdData (END)
+
+             ; FUNCTION _display (BEGIN)
+                                           ; SOURCE LINE # 93
+;---- Variable 'd2' assigned to Register 'R6' ----
+0000 AE05              MOV     R6,AR5
+;---- Variable 'd1' assigned to Register 'R1' ----
+0002 A907              MOV     R1,AR7
+                                           ; SOURCE LINE # 94
+0004 AF06              MOV     R7,AR6
+                                           ; SOURCE LINE # 95
+0006 120000      R     LCALL   L?0097
+                                           ; SOURCE LINE # 96
+0009 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 97
+000B AF01              MOV     R7,AR1
+000D 1100        R     ACALL   _lcdData
+                                           ; SOURCE LINE # 98
+000F 7F1E              MOV     R7,#01EH
+0011 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 99
+0013 7F20              MOV     R7,#020H
+0015 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 100
+0017 7F1E              MOV     R7,#01EH
+0019 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 101
+001B 7F43              MOV     R7,#043H
+001D 0100        R     AJMP    _lcdData
+             ; FUNCTION _display (END)
+
+             ; FUNCTION _convert (BEGIN)
+                                           ; SOURCE LINE # 106
+;---- Variable 'value' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 108
+0000 EF                MOV     A,R7
+0001 75F00A            MOV     B,#0AH
+0004 1100        E     ACALL   ?C?SCDIV
+0006 FE                MOV     R6,A
+;---- Variable 'y' assigned to Register 'R6' ----
+                                           ; SOURCE LINE # 109
+0007 EF                MOV     A,R7
+0008 75F00A            MOV     B,#0AH
+000B 1100        E     ACALL   ?C?SCDIV
+000D AFF0              MOV     R7,B
+;---- Variable 'd1' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 110
+000F EE                MOV     A,R6
+0010 75F00A            MOV     B,#0AH
+0013 1100        E     ACALL   ?C?SCDIV
+0015 ADF0              MOV     R5,B
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 12  
+
+;---- Variable 'd2' assigned to Register 'R5' ----
+                                           ; SOURCE LINE # 111
+0017 EE                MOV     A,R6
+0018 75F00A            MOV     B,#0AH
+001B 1100        E     ACALL   ?C?SCDIV
+001D FE                MOV     R6,A
+;---- Variable 'd3' assigned to Register 'R6' ----
+                                           ; SOURCE LINE # 112
+001E 430730            ORL     AR7,#030H
+                                           ; SOURCE LINE # 113
+0021 430530            ORL     AR5,#030H
+                                           ; SOURCE LINE # 114
+0024 430630            ORL     AR6,#030H
+                                           ; SOURCE LINE # 115
+0027 0100        R     AJMP    _display
+             ; FUNCTION _convert (END)
+
+             ; FUNCTION L?0099 (BEGIN)
+0000         L?0100:
+0000 7F86              MOV     R7,#086H
+0002 1100        R     ACALL   _lcdCmd
+0004 AF00        R     MOV     R7,value
+             ; FUNCTION _update (BEGIN)
+                                           ; SOURCE LINE # 121
+;---- Variable 'value' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 123
+0006 EF                MOV     A,R7
+0007 75F00A            MOV     B,#0AH
+000A 1100        E     ACALL   ?C?SCDIV
+000C FE                MOV     R6,A
+;---- Variable 'y' assigned to Register 'R6' ----
+                                           ; SOURCE LINE # 124
+000D EF                MOV     A,R7
+000E 75F00A            MOV     B,#0AH
+0011 1100        E     ACALL   ?C?SCDIV
+0013 AFF0              MOV     R7,B
+;---- Variable 'd1' assigned to Register 'R1' ----
+0015 A907              MOV     R1,AR7
+                                           ; SOURCE LINE # 125
+0017 EE                MOV     A,R6
+0018 75F00A            MOV     B,#0AH
+001B 1100        E     ACALL   ?C?SCDIV
+001D AFF0              MOV     R7,B
+;---- Variable 'd2' assigned to Register 'R7' ----
+                                           ; SOURCE LINE # 126
+001F EE                MOV     A,R6
+0020 75F00A            MOV     B,#0AH
+0023 1100        E     ACALL   ?C?SCDIV
+0025 FE                MOV     R6,A
+;---- Variable 'd3' assigned to Register 'R6' ----
+                                           ; SOURCE LINE # 127
+0026 430130            ORL     AR1,#030H
+                                           ; SOURCE LINE # 128
+0029 430730            ORL     AR7,#030H
+                                           ; SOURCE LINE # 129
+002C 430630            ORL     AR6,#030H
+                                           ; SOURCE LINE # 130
+                                           ; SOURCE LINE # 131
+002F 120000      R     LCALL   L?0097
+                                           ; SOURCE LINE # 132
+0032 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 133
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 13  
+
+0034 AF01              MOV     R7,AR1
+0036 1100        R     ACALL   _lcdData
+                                           ; SOURCE LINE # 134
+0038 7F1E              MOV     R7,#01EH
+003A 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 135
+003C 7FC0              MOV     R7,#0C0H
+003E 0100        R     AJMP    _lcdCmd
+             ; FUNCTION _update (END)
+
+             ; FUNCTION adcRead (BEGIN)
+                                           ; SOURCE LINE # 140
+                                           ; SOURCE LINE # 142
+0000 C2A4              CLR     wr
+                                           ; SOURCE LINE # 143
+0002 D2A4              SETB    wr
+0004         ?C0017:
+                                           ; SOURCE LINE # 144
+0004 20A3FD            JB      INTR,?C0017
+0007         ?C0018:
+                                           ; SOURCE LINE # 145
+0007 C2A5              CLR     rd
+                                           ; SOURCE LINE # 146
+;---- Variable 'value' assigned to Register 'R7' ----
+0009 AFB0              MOV     R7,P3
+                                           ; SOURCE LINE # 147
+000B D2A5              SETB    rd
+                                           ; SOURCE LINE # 148
+                                           ; SOURCE LINE # 149
+000D         ?C0019:
+000D 22                RET     
+             ; FUNCTION adcRead (END)
+
+             ; FUNCTION motorcontrol (BEGIN)
+                                           ; SOURCE LINE # 152
+                                           ; SOURCE LINE # 155
+0000 7800        R     MOV     R0,#LOW x
+0002 7C00        R     MOV     R4,#HIGH x
+0004 7D00              MOV     R5,#00H
+0006 7BFF              MOV     R3,#0FFH
+0008 7A00        R     MOV     R2,#HIGH _?ix1000
+000A 7900        R     MOV     R1,#LOW _?ix1000
+000C 7E00              MOV     R6,#00H
+000E 7F06              MOV     R7,#06H
+0010 1100        E     ACALL   ?C?COPY
+                                           ; SOURCE LINE # 156
+0012 7800        R     MOV     R0,#LOW x1
+0014 7C00        R     MOV     R4,#HIGH x1
+0016 7D00              MOV     R5,#00H
+0018 7BFF              MOV     R3,#0FFH
+001A 7A00        R     MOV     R2,#HIGH _?ix1001
+001C 7900        R     MOV     R1,#LOW _?ix1001
+001E 7E00              MOV     R6,#00H
+0020 7F05              MOV     R7,#05H
+0022 1100        E     ACALL   ?C?COPY
+                                           ; SOURCE LINE # 157
+0024 7800        R     MOV     R0,#LOW x2
+0026 7C00        R     MOV     R4,#HIGH x2
+0028 7D00              MOV     R5,#00H
+002A 7BFF              MOV     R3,#0FFH
+002C 7A00        R     MOV     R2,#HIGH _?ix1002
+002E 7900        R     MOV     R1,#LOW _?ix1002
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 14  
+
+0030 7E00              MOV     R6,#00H
+0032 7F05              MOV     R7,#05H
+0034 1100        E     ACALL   ?C?COPY
+                                           ; SOURCE LINE # 158
+0036 7800        R     MOV     R0,#LOW y
+0038 7C00        R     MOV     R4,#HIGH y
+003A 7D00              MOV     R5,#00H
+003C 7BFF              MOV     R3,#0FFH
+003E 7A00        R     MOV     R2,#HIGH _?ix1003
+0040 7900        R     MOV     R1,#LOW _?ix1003
+0042 7E00              MOV     R6,#00H
+0044 7F0C              MOV     R7,#0CH
+0046 1100        E     ACALL   ?C?COPY
+                                           ; SOURCE LINE # 159
+0048 7800        R     MOV     R0,#LOW z
+004A 7C00        R     MOV     R4,#HIGH z
+004C 7D00              MOV     R5,#00H
+004E 7BFF              MOV     R3,#0FFH
+0050 7A00        R     MOV     R2,#HIGH _?ix1004
+0052 7900        R     MOV     R1,#LOW _?ix1004
+0054 7E00              MOV     R6,#00H
+0056 7F0B              MOV     R7,#0BH
+0058 1100        E     ACALL   ?C?COPY
+                                           ; SOURCE LINE # 160
+005A 7800        R     MOV     R0,#LOW u1
+005C 7C00        R     MOV     R4,#HIGH u1
+005E 7D00              MOV     R5,#00H
+0060 7BFF              MOV     R3,#0FFH
+0062 7A00        R     MOV     R2,#HIGH _?ix1005
+0064 7900        R     MOV     R1,#LOW _?ix1005
+0066 7E00              MOV     R6,#00H
+0068 7F05              MOV     R7,#05H
+006A 1100        E     ACALL   ?C?COPY
+                                           ; SOURCE LINE # 161
+006C 7800        R     MOV     R0,#LOW u2
+006E 7C00        R     MOV     R4,#HIGH u2
+0070 7D00              MOV     R5,#00H
+0072 7BFF              MOV     R3,#0FFH
+0074 7A00        R     MOV     R2,#HIGH _?ix1006
+0076 7900        R     MOV     R1,#LOW _?ix1006
+0078 7E00              MOV     R6,#00H
+007A 7F0B              MOV     R7,#0BH
+007C 1100        E     ACALL   ?C?COPY
+007E         ?C0020:
+                                           ; SOURCE LINE # 163
+                                           ; SOURCE LINE # 165
+007E 1100        R     ACALL   adcRead
+0080 8F00        R     MOV     value,R7
+                                           ; SOURCE LINE # 166
+0082 E500        R     MOV     A,value
+0084 C3                CLR     C
+0085 9414              SUBB    A,#014H
+0087 4002              JC      $ + 4H
+0089 0100        R     AJMP    ?C0045
+                                           ; SOURCE LINE # 167
+008B 7F01              MOV     R7,#01H
+008D 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 168
+008F E4                CLR     A
+0090 F500        R     MOV     i,A
+0092         ?C0023:
+                                           ; SOURCE LINE # 169
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 15  
+
+                                           ; SOURCE LINE # 170
+                                           ; SOURCE LINE # 171
+0092 120000      R     LCALL   L?0094
+                                           ; SOURCE LINE # 172
+0095 0500        R     INC     i
+0097 E500        R     MOV     A,i
+0099 C3                CLR     C
+009A 9406              SUBB    A,#06H
+009C 40F4              JC      ?C0023
+009E         ?C0024:
+                                           ; SOURCE LINE # 173
+009E AF00        R     MOV     R7,value
+00A0 1100        R     ACALL   _convert
+                                           ; SOURCE LINE # 174
+00A2 7F8B              MOV     R7,#08BH
+00A4 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 175
+00A6 E4                CLR     A
+00A7 F500        R     MOV     i,A
+00A9         ?C0026:
+                                           ; SOURCE LINE # 176
+00A9 1100        R     ACALL   L?0098
+                                           ; SOURCE LINE # 177
+00AB 7400        R     MOV     A,#LOW x2
+00AD 1100        R     ACALL   L?0096
+                                           ; SOURCE LINE # 178
+00AF 0500        R     INC     i
+00B1 E500        R     MOV     A,i
+00B3 C3                CLR     C
+00B4 9405              SUBB    A,#05H
+00B6 40F1              JC      ?C0026
+00B8         ?C0029:
+                                           ; SOURCE LINE # 180
+00B8 E500        R     MOV     A,value
+00BA D3                SETB    C
+00BB 940A              SUBB    A,#0AH
+00BD 4041              JC      ?C0037
+00BF E500        R     MOV     A,value
+00C1 9414              SUBB    A,#014H
+00C3 503B              JNC     ?C0037
+                                           ; SOURCE LINE # 181
+00C5 D2A6              SETB    MTR
+                                           ; SOURCE LINE # 182
+00C7 D281              SETB    HTR2
+                                           ; SOURCE LINE # 183
+00C9 C280              CLR     HTR1
+                                           ; SOURCE LINE # 184
+00CB 7F01              MOV     R7,#01H
+00CD 7E00              MOV     R6,#00H
+00CF 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 185
+00D1 750031      R     MOV     z+0AH,#031H
+                                           ; SOURCE LINE # 186
+00D4 7FC0              MOV     R7,#0C0H
+00D6 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 187
+00D8 E4                CLR     A
+00D9 F500        R     MOV     i,A
+00DB         ?C0031:
+                                           ; SOURCE LINE # 188
+00DB 1100        R     ACALL   L?0098
+                                           ; SOURCE LINE # 189
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 16  
+
+00DD 7400        R     MOV     A,#LOW z
+00DF 1100        R     ACALL   L?0096
+                                           ; SOURCE LINE # 190
+00E1 0500        R     INC     i
+00E3 E500        R     MOV     A,i
+00E5 C3                CLR     C
+00E6 940B              SUBB    A,#0BH
+00E8 40F1              JC      ?C0031
+                                           ; SOURCE LINE # 191
+00EA         bkl5:
+                                           ; SOURCE LINE # 192
+00EA 1100        R     ACALL   adcRead
+00EC 8F00        R     MOV     value,R7
+                                           ; SOURCE LINE # 193
+00EE E500        R     MOV     A,value
+00F0 D3                SETB    C
+00F1 940A              SUBB    A,#0AH
+00F3 400B              JC      ?C0037
+00F5 E500        R     MOV     A,value
+00F7 9414              SUBB    A,#014H
+00F9 5005              JNC     ?C0037
+                                           ; SOURCE LINE # 194
+                                           ; SOURCE LINE # 195
+00FB 120000      R     LCALL   L?0099
+                                           ; SOURCE LINE # 196
+00FE 80EA              SJMP    bkl5
+                                           ; SOURCE LINE # 197
+                                           ; SOURCE LINE # 199
+                                           ; SOURCE LINE # 200
+0100         ?C0037:
+                                           ; SOURCE LINE # 202
+0100 E500        R     MOV     A,value
+0102 C3                CLR     C
+0103 9400              SUBB    A,#00H
+0105 4043              JC      ?C0045
+0107 E500        R     MOV     A,value
+0109 D3                SETB    C
+010A 940A              SUBB    A,#0AH
+010C 503C              JNC     ?C0045
+                                           ; SOURCE LINE # 203
+010E D2A6              SETB    MTR
+                                           ; SOURCE LINE # 204
+0110 C280              CLR     HTR1
+                                           ; SOURCE LINE # 205
+0112 1100        R     ACALL   L?0098
+                                           ; SOURCE LINE # 206
+0114 C281              CLR     HTR2
+                                           ; SOURCE LINE # 207
+0116 7F01              MOV     R7,#01H
+0118 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 208
+011A 7FC0              MOV     R7,#0C0H
+011C 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 209
+011E 750032      R     MOV     z+0AH,#032H
+                                           ; SOURCE LINE # 210
+0121 E4                CLR     A
+0122 F500        R     MOV     i,A
+0124         ?C0039:
+                                           ; SOURCE LINE # 211
+0124 1100        R     ACALL   L?0098
+                                           ; SOURCE LINE # 212
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 17  
+
+0126 7400        R     MOV     A,#LOW z
+0128 1100        R     ACALL   L?0096
+                                           ; SOURCE LINE # 213
+012A 0500        R     INC     i
+012C E500        R     MOV     A,i
+012E C3                CLR     C
+012F 940B              SUBB    A,#0BH
+0131 40F1              JC      ?C0039
+                                           ; SOURCE LINE # 214
+0133         bkl6:
+                                           ; SOURCE LINE # 215
+0133 1100        R     ACALL   adcRead
+0135 8F00        R     MOV     value,R7
+                                           ; SOURCE LINE # 216
+0137 E500        R     MOV     A,value
+0139 C3                CLR     C
+013A 9400              SUBB    A,#00H
+013C 400C              JC      ?C0045
+013E E500        R     MOV     A,value
+0140 D3                SETB    C
+0141 940A              SUBB    A,#0AH
+0143 5005              JNC     ?C0045
+                                           ; SOURCE LINE # 217
+                                           ; SOURCE LINE # 218
+0145 120000      R     LCALL   L?0099
+                                           ; SOURCE LINE # 219
+0148 80E9              SJMP    bkl6
+                                           ; SOURCE LINE # 220
+                                           ; SOURCE LINE # 222
+                                           ; SOURCE LINE # 223
+                                           ; SOURCE LINE # 226
+014A         ?C0045:
+                                           ; SOURCE LINE # 229
+014A E500        R     MOV     A,value
+014C C3                CLR     C
+014D 9414              SUBB    A,#014H
+014F 4060              JC      ?C0046
+0151 E500        R     MOV     A,value
+0153 9419              SUBB    A,#019H
+0155 505A              JNC     ?C0046
+                                           ; SOURCE LINE # 230
+0157 D280              SETB    HTR1
+                                           ; SOURCE LINE # 231
+0159 D281              SETB    HTR2
+                                           ; SOURCE LINE # 232
+015B D2A6              SETB    MTR
+                                           ; SOURCE LINE # 233
+015D 7F01              MOV     R7,#01H
+015F 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 234
+0161 E4                CLR     A
+0162 F500        R     MOV     i,A
+0164         ?C0047:
+                                           ; SOURCE LINE # 235
+                                           ; SOURCE LINE # 236
+0164 120000      R     LCALL   L?0094
+                                           ; SOURCE LINE # 237
+0167 0500        R     INC     i
+0169 E500        R     MOV     A,i
+016B C3                CLR     C
+016C 9406              SUBB    A,#06H
+016E 40F4              JC      ?C0047
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 18  
+
+0170         ?C0048:
+                                           ; SOURCE LINE # 238
+0170 AF00        R     MOV     R7,value
+0172 1100        R     ACALL   _convert
+                                           ; SOURCE LINE # 239
+0174 E4                CLR     A
+0175 F500        R     MOV     i,A
+0177         ?C0050:
+                                           ; SOURCE LINE # 240
+0177 1100        R     ACALL   L?0098
+                                           ; SOURCE LINE # 241
+0179 7400        R     MOV     A,#LOW u1
+017B 1100        R     ACALL   L?0096
+                                           ; SOURCE LINE # 242
+017D 0500        R     INC     i
+017F E500        R     MOV     A,i
+0181 C3                CLR     C
+0182 9405              SUBB    A,#05H
+0184 40F1              JC      ?C0050
+0186         ?C0051:
+                                           ; SOURCE LINE # 243
+0186 7FC0              MOV     R7,#0C0H
+0188 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 244
+018A E4                CLR     A
+018B F500        R     MOV     i,A
+018D         ?C0053:
+                                           ; SOURCE LINE # 245
+018D 1100        R     ACALL   L?0098
+                                           ; SOURCE LINE # 246
+018F 7400        R     MOV     A,#LOW u2
+0191 1100        R     ACALL   L?0096
+                                           ; SOURCE LINE # 247
+0193 0500        R     INC     i
+0195 E500        R     MOV     A,i
+0197 C3                CLR     C
+0198 940B              SUBB    A,#0BH
+019A 40F1              JC      ?C0053
+                                           ; SOURCE LINE # 248
+019C         bklbkl:
+                                           ; SOURCE LINE # 249
+019C 1100        R     ACALL   adcRead
+019E 8F00        R     MOV     value,R7
+                                           ; SOURCE LINE # 250
+01A0 E500        R     MOV     A,value
+01A2 C3                CLR     C
+01A3 9414              SUBB    A,#014H
+01A5 400A              JC      ?C0046
+01A7 E500        R     MOV     A,value
+01A9 9419              SUBB    A,#019H
+01AB 5004              JNC     ?C0046
+                                           ; SOURCE LINE # 251
+                                           ; SOURCE LINE # 252
+01AD 1100        R     ACALL   L?0100
+                                           ; SOURCE LINE # 253
+01AF 80EB              SJMP    bklbkl
+                                           ; SOURCE LINE # 254
+                                           ; SOURCE LINE # 256
+                                           ; SOURCE LINE # 257
+01B1         ?C0046:
+                                           ; SOURCE LINE # 261
+01B1 E500        R     MOV     A,value
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 19  
+
+01B3 C3                CLR     C
+01B4 9419              SUBB    A,#019H
+01B6 5002              JNC     $ + 4H
+01B8 0100        R     AJMP    ?C0020
+                                           ; SOURCE LINE # 262
+                                           ; SOURCE LINE # 263
+01BA D280              SETB    HTR1
+                                           ; SOURCE LINE # 264
+01BC D281              SETB    HTR2
+                                           ; SOURCE LINE # 265
+01BE 7F01              MOV     R7,#01H
+01C0 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 266
+01C2 E4                CLR     A
+01C3 F500        R     MOV     i,A
+01C5         ?C0060:
+                                           ; SOURCE LINE # 267
+                                           ; SOURCE LINE # 268
+                                           ; SOURCE LINE # 269
+01C5 1100        R     ACALL   L?0095
+                                           ; SOURCE LINE # 270
+01C7 0500        R     INC     i
+01C9 E500        R     MOV     A,i
+01CB C3                CLR     C
+01CC 9406              SUBB    A,#06H
+01CE 40F5              JC      ?C0060
+01D0         ?C0061:
+                                           ; SOURCE LINE # 271
+01D0 AF00        R     MOV     R7,value
+01D2 1100        R     ACALL   _convert
+                                           ; SOURCE LINE # 272
+01D4 7F8B              MOV     R7,#08BH
+01D6 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 273
+01D8 E4                CLR     A
+01D9 F500        R     MOV     i,A
+01DB         ?C0063:
+                                           ; SOURCE LINE # 274
+                                           ; SOURCE LINE # 275
+01DB 1100        R     ACALL   L?0098
+                                           ; SOURCE LINE # 276
+01DD 7400        R     MOV     A,#LOW x1
+01DF 1100        R     ACALL   L?0096
+                                           ; SOURCE LINE # 277
+01E1 0500        R     INC     i
+01E3 E500        R     MOV     A,i
+01E5 C3                CLR     C
+01E6 9405              SUBB    A,#05H
+01E8 40F1              JC      ?C0063
+01EA         ?C0066:
+                                           ; SOURCE LINE # 282
+01EA E500        R     MOV     A,value
+01EC C3                CLR     C
+01ED 9419              SUBB    A,#019H
+01EF 4040              JC      ?C0074
+01F1 E500        R     MOV     A,value
+01F3 941E              SUBB    A,#01EH
+01F5 503A              JNC     ?C0074
+                                           ; SOURCE LINE # 283
+01F7 7FC0              MOV     R7,#0C0H
+01F9 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 284
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 20  
+
+01FB 750031      R     MOV     y+0BH,#031H
+                                           ; SOURCE LINE # 285
+01FE E4                CLR     A
+01FF F500        R     MOV     i,A
+0201         ?C0068:
+                                           ; SOURCE LINE # 286
+0201 1100        R     ACALL   L?0098
+                                           ; SOURCE LINE # 287
+0203 7400        R     MOV     A,#LOW y
+0205 1100        R     ACALL   L?0096
+                                           ; SOURCE LINE # 288
+0207 0500        R     INC     i
+0209 E500        R     MOV     A,i
+020B C3                CLR     C
+020C 940C              SUBB    A,#0CH
+020E 40F1              JC      ?C0068
+                                           ; SOURCE LINE # 289
+0210         bkl1:
+                                           ; SOURCE LINE # 290
+0210 C2A6              CLR     MTR
+                                           ; SOURCE LINE # 291
+0212 7F32              MOV     R7,#032H
+0214 7E00              MOV     R6,#00H
+0216 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 292
+0218 D2A6              SETB    MTR
+                                           ; SOURCE LINE # 293
+021A 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 294
+021C 1100        R     ACALL   adcRead
+021E 8F00        R     MOV     value,R7
+                                           ; SOURCE LINE # 295
+0220 E500        R     MOV     A,value
+0222 C3                CLR     C
+0223 9419              SUBB    A,#019H
+0225 400A              JC      ?C0074
+0227 E500        R     MOV     A,value
+0229 941E              SUBB    A,#01EH
+022B 5004              JNC     ?C0074
+                                           ; SOURCE LINE # 296
+                                           ; SOURCE LINE # 297
+022D 1100        R     ACALL   L?0100
+                                           ; SOURCE LINE # 298
+022F 80DF              SJMP    bkl1
+                                           ; SOURCE LINE # 299
+                                           ; SOURCE LINE # 301
+                                           ; SOURCE LINE # 303
+0231         ?C0074:
+                                           ; SOURCE LINE # 307
+0231 E500        R     MOV     A,value
+0233 C3                CLR     C
+0234 941E              SUBB    A,#01EH
+0236 4042              JC      ?C0082
+0238 E500        R     MOV     A,value
+023A 9423              SUBB    A,#023H
+023C 503C              JNC     ?C0082
+                                           ; SOURCE LINE # 308
+023E 750032      R     MOV     y+0BH,#032H
+                                           ; SOURCE LINE # 309
+0241 7FC0              MOV     R7,#0C0H
+0243 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 310
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 21  
+
+0245 E4                CLR     A
+0246 F500        R     MOV     i,A
+0248         ?C0076:
+                                           ; SOURCE LINE # 311
+0248 1100        R     ACALL   L?0098
+                                           ; SOURCE LINE # 312
+024A 7400        R     MOV     A,#LOW y
+024C 1100        R     ACALL   L?0096
+                                           ; SOURCE LINE # 313
+024E 0500        R     INC     i
+0250 E500        R     MOV     A,i
+0252 C3                CLR     C
+0253 940C              SUBB    A,#0CH
+0255 40F1              JC      ?C0076
+                                           ; SOURCE LINE # 314
+0257         bkl2:
+                                           ; SOURCE LINE # 315
+0257 C2A6              CLR     MTR
+                                           ; SOURCE LINE # 316
+0259 7F4B              MOV     R7,#04BH
+025B 7E00              MOV     R6,#00H
+025D 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 317
+025F D2A6              SETB    MTR
+                                           ; SOURCE LINE # 318
+0261 7F19              MOV     R7,#019H
+0263 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 319
+0265 1100        R     ACALL   adcRead
+0267 8F00        R     MOV     value,R7
+                                           ; SOURCE LINE # 320
+0269 E500        R     MOV     A,value
+026B C3                CLR     C
+026C 941E              SUBB    A,#01EH
+026E 400A              JC      ?C0082
+0270 E500        R     MOV     A,value
+0272 9423              SUBB    A,#023H
+0274 5004              JNC     ?C0082
+                                           ; SOURCE LINE # 321
+                                           ; SOURCE LINE # 322
+0276 1100        R     ACALL   L?0100
+                                           ; SOURCE LINE # 323
+0278 80DD              SJMP    bkl2
+                                           ; SOURCE LINE # 324
+                                           ; SOURCE LINE # 326
+                                           ; SOURCE LINE # 327
+027A         ?C0082:
+                                           ; SOURCE LINE # 331
+027A E500        R     MOV     A,value
+027C C3                CLR     C
+027D 9423              SUBB    A,#023H
+027F 5002              JNC     $ + 4H
+0281 0100        R     AJMP    ?C0020
+                                           ; SOURCE LINE # 332
+0283 750033      R     MOV     y+0BH,#033H
+                                           ; SOURCE LINE # 333
+0286 7FC0              MOV     R7,#0C0H
+0288 1100        R     ACALL   _lcdCmd
+                                           ; SOURCE LINE # 334
+028A E4                CLR     A
+028B F500        R     MOV     i,A
+028D         ?C0084:
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 22  
+
+                                           ; SOURCE LINE # 335
+028D 1100        R     ACALL   L?0098
+                                           ; SOURCE LINE # 336
+028F 7400        R     MOV     A,#LOW y
+0291 1100        R     ACALL   L?0096
+                                           ; SOURCE LINE # 337
+0293 0500        R     INC     i
+0295 E500        R     MOV     A,i
+0297 C3                CLR     C
+0298 940C              SUBB    A,#0CH
+029A 40F1              JC      ?C0084
+                                           ; SOURCE LINE # 338
+029C         bkl3:
+                                           ; SOURCE LINE # 339
+029C C2A6              CLR     MTR
+                                           ; SOURCE LINE # 340
+029E 1100        R     ACALL   adcRead
+02A0 8F00        R     MOV     value,R7
+                                           ; SOURCE LINE # 341
+02A2 E500        R     MOV     A,value
+02A4 C3                CLR     C
+02A5 9423              SUBB    A,#023H
+02A7 5002              JNC     $ + 4H
+02A9 0100        R     AJMP    ?C0020
+                                           ; SOURCE LINE # 342
+                                           ; SOURCE LINE # 343
+02AB 1100        R     ACALL   L?0100
+                                           ; SOURCE LINE # 344
+02AD 80ED              SJMP    bkl3
+             ; FUNCTION motorcontrol (END)
+
+             ; FUNCTION main (BEGIN)
+                                           ; SOURCE LINE # 356
+                                           ; SOURCE LINE # 357
+0000 7580FF            MOV     P0,#0FFH
+                                           ; SOURCE LINE # 358
+0003 75B0FF            MOV     P3,#0FFH
+                                           ; SOURCE LINE # 359
+0006 D2A3              SETB    INTR
+                                           ; SOURCE LINE # 360
+0008 D2A5              SETB    rd
+                                           ; SOURCE LINE # 361
+000A D2A4              SETB    wr
+                                           ; SOURCE LINE # 362
+000C D2A6              SETB    MTR
+                                           ; SOURCE LINE # 363
+000E C280              CLR     HTR1
+                                           ; SOURCE LINE # 364
+0010 C281              CLR     HTR2
+                                           ; SOURCE LINE # 365
+0012 7F32              MOV     R7,#032H
+0014 7E00              MOV     R6,#00H
+0016 1100        R     ACALL   _msDelay
+                                           ; SOURCE LINE # 366
+0018 D280              SETB    HTR1
+                                           ; SOURCE LINE # 367
+001A D281              SETB    HTR2
+                                           ; SOURCE LINE # 368
+001C 1100        R     ACALL   lcdInit
+                                           ; SOURCE LINE # 369
+001E 0100        R     AJMP    motorcontrol
+             ; FUNCTION main (END)
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 23  
+
+
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 24  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+P0 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0080H  1
+P1 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   0090H  1
+P2 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00A0H  1
+P3 . . . . . . . . . . . . . . . . . .  SFR      DATA   U_CHAR   00B0H  1
+_convert . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  value. . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  y. . . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0006H  1
+  d1 . . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  d2 . . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0005H  1
+  d3 . . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0006H  1
+_update. . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0006H  -----
+  value. . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  y. . . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0006H  1
+  d1 . . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0001H  1
+  d2 . . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+  d3 . . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0006H  1
+HTR1 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0080H  1
+HTR2 . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0081H  1
+main . . . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+adcRead. . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  value. . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+lcdReady . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+_lcdData . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     000DH  -----
+  value. . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0007H  1
+motorcontrol . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  i. . . . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0000H  1
+  value. . . . . . . . . . . . . . . .  AUTO     DATA   U_CHAR   0001H  1
+  x. . . . . . . . . . . . . . . . . .  AUTO     DATA   ARRAY    0002H  6
+  x1 . . . . . . . . . . . . . . . . .  AUTO     DATA   ARRAY    0008H  5
+  x2 . . . . . . . . . . . . . . . . .  AUTO     DATA   ARRAY    000DH  5
+  y. . . . . . . . . . . . . . . . . .  AUTO     DATA   ARRAY    0012H  12
+  z. . . . . . . . . . . . . . . . . .  AUTO     DATA   ARRAY    001EH  11
+  u1 . . . . . . . . . . . . . . . . .  AUTO     DATA   ARRAY    0029H  5
+  u2 . . . . . . . . . . . . . . . . .  AUTO     DATA   ARRAY    002EH  11
+  bkl5 . . . . . . . . . . . . . . . .  LABEL    CODE   LABEL    -----  -----
+  bkl6 . . . . . . . . . . . . . . . .  LABEL    CODE   LABEL    -----  -----
+  bklbkl . . . . . . . . . . . . . . .  LABEL    CODE   LABEL    -----  -----
+  bkl1 . . . . . . . . . . . . . . . .  LABEL    CODE   LABEL    -----  -----
+  bkl2 . . . . . . . . . . . . . . . .  LABEL    CODE   LABEL    -----  -----
+  bkl3 . . . . . . . . . . . . . . . .  LABEL    CODE   LABEL    -----  -----
+INTR . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A3H  1
+_?ix1000 . . . . . . . . . . . . . . .  STATIC   CODE   ARRAY    0000H  6
+_?ix1001 . . . . . . . . . . . . . . .  STATIC   CODE   ARRAY    0006H  5
+_?ix1002 . . . . . . . . . . . . . . .  STATIC   CODE   ARRAY    000BH  5
+busy . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      0097H  1
+_?ix1003 . . . . . . . . . . . . . . .  STATIC   CODE   ARRAY    0010H  12
+_?ix1004 . . . . . . . . . . . . . . .  STATIC   CODE   ARRAY    001CH  11
+_?ix1005 . . . . . . . . . . . . . . .  STATIC   CODE   ARRAY    0027H  5
+_?ix1006 . . . . . . . . . . . . . . .  STATIC   CODE   ARRAY    002CH  11
+_lcdCmd. . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  value. . . . . . . . . . . . . . . .  * REG *  DATA   U_CHAR   0007H  1
+lcdInit. . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+_msDelay . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0006H  -----
+  value. . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0006H  2
+  x. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0004H  2
+  y. . . . . . . . . . . . . . . . . .  * REG *  DATA   U_INT    0002H  2
+en . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A2H  1
+C51 COMPILER V8.12   AUTOMATIC_AIR_CONDITION                                               11/09/2013 21:10:48 PAGE 25  
+
+NAME                                    CLASS   MSPACE  TYPE    OFFSET  SIZE
+====                                    =====   ======  ====    ======  ====
+
+
+rd . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A5H  1
+rs . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A0H  1
+rw . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A1H  1
+wr . . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A4H  1
+MTR. . . . . . . . . . . . . . . . . .  ABSBIT   -----  BIT      00A6H  1
+_display . . . . . . . . . . . . . . .  PUBLIC   CODE   PROC     0000H  -----
+  d1 . . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0001H  1
+  d2 . . . . . . . . . . . . . . . . .  * REG *  DATA   CHAR     0006H  1
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    977    ----
+   CONSTANT SIZE    =     55    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      57
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

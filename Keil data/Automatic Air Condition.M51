@@ -1,0 +1,536 @@
+BL51 BANKED LINKER/LOCATER V6.11                                                        11/09/2013  21:10:48  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.11, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE STARTUP.obj, Automatic Air condition.obj TO Automatic Air Condition RAMSIZE (256) CODE (0X0000-
+>> 0X1FFF)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  STARTUP.obj (?C_STARTUP)
+  Automatic Air condition.obj (AUTOMATIC_AIR_CONDITION)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?COPY)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?SCDIV)
+
+
+LINK MAP OF MODULE:  Automatic Air Condition (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0039H     UNIT         _DATA_GROUP_
+            IDATA   0041H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     02AFH     INBLOCK      ?PR?MOTORCONTROL?AUTOMATIC_AIR_CONDITION
+            CODE    02B2H     0118H     UNIT         ?C?LIB_CODE
+            CODE    03CAH     0040H     INBLOCK      ?PR?_UPDATE?AUTOMATIC_AIR_CONDITION
+            CODE    040AH     0037H     UNIT         ?CO?AUTOMATIC_AIR_CONDITION
+            CODE    0441H     0029H     INBLOCK      ?PR?_CONVERT?AUTOMATIC_AIR_CONDITION
+            CODE    046AH     0026H     INBLOCK      ?PR?_MSDELAY?AUTOMATIC_AIR_CONDITION
+            CODE    0490H     0020H     INBLOCK      ?PR?MAIN?AUTOMATIC_AIR_CONDITION
+            CODE    04B0H     001FH     INBLOCK      ?PR?_DISPLAY?AUTOMATIC_AIR_CONDITION
+            CODE    04CFH     0018H     INBLOCK      ?PR?_LCDDATA?AUTOMATIC_AIR_CONDITION
+            CODE    04E7H     0011H     INBLOCK      ?PR?LCDINIT?AUTOMATIC_AIR_CONDITION
+            CODE    04F8H     0010H     INBLOCK      ?PR?LCDREADY?AUTOMATIC_AIR_CONDITION
+            CODE    0508H     000EH     INBLOCK      ?PR?ADCREAD?AUTOMATIC_AIR_CONDITION
+            CODE    0516H     000DH     INBLOCK      ?PR?_LCDCMD?AUTOMATIC_AIR_CONDITION
+            CODE    0523H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   Automatic Air Condition (?C_STARTUP)
+
+
+SEGMENT                                            DATA_GROUP 
+  +--> CALLED SEGMENT                            START    LENGTH
+----------------------------------------------------------------
+?C_C51STARTUP                                    -----    -----
+  +--> ?PR?MAIN?AUTOMATIC_AIR_CONDITION
+
+?PR?MAIN?AUTOMATIC_AIR_CONDITION                 -----    -----
+  +--> ?PR?_MSDELAY?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?LCDINIT?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?MOTORCONTROL?AUTOMATIC_AIR_CONDITION
+BL51 BANKED LINKER/LOCATER V6.11                                                      11/09/2013  21:10:48  PAGE 2
+
+
+
+?PR?_MSDELAY?AUTOMATIC_AIR_CONDITION             -----    -----
+  +--> ?PR?_LCDDATA?AUTOMATIC_AIR_CONDITION
+
+?PR?LCDINIT?AUTOMATIC_AIR_CONDITION              -----    -----
+  +--> ?PR?_LCDCMD?AUTOMATIC_AIR_CONDITION
+
+?PR?_LCDCMD?AUTOMATIC_AIR_CONDITION              -----    -----
+  +--> ?PR?LCDREADY?AUTOMATIC_AIR_CONDITION
+
+?PR?MOTORCONTROL?AUTOMATIC_AIR_CONDITION         0008H    0039H
+  +--> ?CO?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?ADCREAD?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?_LCDCMD?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?_LCDDATA?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?_CONVERT?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?_MSDELAY?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?_UPDATE?AUTOMATIC_AIR_CONDITION
+
+?PR?_CONVERT?AUTOMATIC_AIR_CONDITION             -----    -----
+  +--> ?PR?_DISPLAY?AUTOMATIC_AIR_CONDITION
+
+?PR?_DISPLAY?AUTOMATIC_AIR_CONDITION             -----    -----
+  +--> ?PR?_MSDELAY?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?_LCDDATA?AUTOMATIC_AIR_CONDITION
+
+?PR?_UPDATE?AUTOMATIC_AIR_CONDITION              -----    -----
+  +--> ?PR?_LCDCMD?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?_MSDELAY?AUTOMATIC_AIR_CONDITION
+  +--> ?PR?_LCDDATA?AUTOMATIC_AIR_CONDITION
+
+
+
+SYMBOL TABLE OF MODULE:  Automatic Air Condition (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0523H         SEGMENT       ?C_C51STARTUP
+  I:0041H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0526H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+BL51 BANKED LINKER/LOCATER V6.11                                                      11/09/2013  21:10:48  PAGE 3
+
+
+  D:0081H         SYMBOL        SP
+  C:0523H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0523H         LINE#         133
+  C:0525H         LINE#         134
+  C:0526H         LINE#         135
+  C:0527H         LINE#         136
+  C:0529H         LINE#         185
+  C:052CH         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        AUTOMATIC_AIR_CONDITION
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  C:0441H         PUBLIC        _convert
+  C:03D0H         PUBLIC        _update
+  B:0080H.0       PUBLIC        HTR1
+  B:0080H.1       PUBLIC        HTR2
+  C:0490H         PUBLIC        main
+  C:0508H         PUBLIC        adcRead
+  C:04F8H         PUBLIC        lcdReady
+  C:04DCH         PUBLIC        _lcdData
+  C:0003H         PUBLIC        motorcontrol
+  B:00A0H.3       PUBLIC        INTR
+  C:040AH         SYMBOL        _?ix1000
+  C:0410H         SYMBOL        _?ix1001
+  C:0415H         SYMBOL        _?ix1002
+  B:0090H.7       PUBLIC        busy
+  C:041AH         SYMBOL        _?ix1003
+  C:0426H         SYMBOL        _?ix1004
+  C:0431H         SYMBOL        _?ix1005
+  C:0436H         SYMBOL        _?ix1006
+  C:0516H         PUBLIC        _lcdCmd
+  C:04E7H         PUBLIC        lcdInit
+  C:0470H         PUBLIC        _msDelay
+  B:00A0H.2       PUBLIC        en
+  B:00A0H.5       PUBLIC        rd
+  B:00A0H.0       PUBLIC        rs
+  B:00A0H.1       PUBLIC        rw
+  B:00A0H.4       PUBLIC        wr
+  B:00A0H.6       PUBLIC        MTR
+  C:04B0H         PUBLIC        _display
+  C:046CH         SYMBOL        L?0098
+  -------         PROC          L?0097
+  -------         ENDPROC       L?0097
+  C:046CH         SYMBOL        L?0098
+  -------         PROC          _MSDELAY
+  D:0006H         SYMBOL        value
+  -------         DO            
+  D:0004H         SYMBOL        x
+BL51 BANKED LINKER/LOCATER V6.11                                                      11/09/2013  21:10:48  PAGE 4
+
+
+  D:0002H         SYMBOL        y
+  -------         ENDDO         
+  C:0470H         LINE#         45
+  C:0470H         LINE#         48
+  C:047AH         LINE#         49
+  C:048FH         LINE#         50
+  -------         ENDPROC       _MSDELAY
+  -------         PROC          LCDREADY
+  C:04F8H         LINE#         53
+  C:04F8H         LINE#         54
+  C:04FAH         LINE#         55
+  C:04FCH         LINE#         56
+  C:04FEH         LINE#         57
+  C:0501H         LINE#         58
+  C:0501H         LINE#         59
+  C:0503H         LINE#         60
+  C:0505H         LINE#         61
+  C:0507H         LINE#         63
+  -------         ENDPROC       LCDREADY
+  -------         PROC          _LCDCMD
+  D:0007H         SYMBOL        value
+  C:0516H         LINE#         65
+  C:0516H         LINE#         66
+  C:0518H         LINE#         67
+  C:051AH         LINE#         68
+  C:051CH         LINE#         69
+  C:051EH         LINE#         70
+  C:0520H         LINE#         71
+  C:0522H         LINE#         73
+  -------         ENDPROC       _LCDCMD
+  -------         PROC          LCDINIT
+  C:04E7H         LINE#         76
+  C:04E7H         LINE#         77
+  C:04EBH         LINE#         78
+  C:04EFH         LINE#         79
+  C:04F3H         LINE#         80
+  C:04F7H         LINE#         82
+  -------         ENDPROC       LCDINIT
+  C:04CFH         SYMBOL        L?0095
+  C:04D7H         SYMBOL        L?0096
+  -------         PROC          L?0094
+  -------         ENDPROC       L?0094
+  C:04CFH         SYMBOL        L?0095
+  C:04D7H         SYMBOL        L?0096
+  -------         PROC          _LCDDATA
+  D:0007H         SYMBOL        value
+  C:04DCH         LINE#         84
+  C:04DCH         LINE#         85
+  C:04DEH         LINE#         86
+  C:04E0H         LINE#         87
+  C:04E2H         LINE#         88
+  C:04E4H         LINE#         89
+  C:04E6H         LINE#         91
+  -------         ENDPROC       _LCDDATA
+  -------         PROC          _DISPLAY
+  D:0001H         SYMBOL        d1
+  D:0006H         SYMBOL        d2
+BL51 BANKED LINKER/LOCATER V6.11                                                      11/09/2013  21:10:48  PAGE 5
+
+
+  C:04B0H         LINE#         93
+  C:04B4H         LINE#         94
+  C:04B6H         LINE#         95
+  C:04B9H         LINE#         96
+  C:04BBH         LINE#         97
+  C:04BFH         LINE#         98
+  C:04C3H         LINE#         99
+  C:04C7H         LINE#         100
+  C:04CBH         LINE#         101
+  -------         ENDPROC       _DISPLAY
+  -------         PROC          _CONVERT
+  D:0007H         SYMBOL        value
+  -------         DO            
+  D:0006H         SYMBOL        y
+  D:0007H         SYMBOL        d1
+  D:0005H         SYMBOL        d2
+  D:0006H         SYMBOL        d3
+  -------         ENDDO         
+  C:0441H         LINE#         106
+  C:0441H         LINE#         108
+  C:0448H         LINE#         109
+  C:0450H         LINE#         110
+  C:0458H         LINE#         111
+  C:045FH         LINE#         112
+  C:0462H         LINE#         113
+  C:0465H         LINE#         114
+  C:0468H         LINE#         115
+  -------         ENDPROC       _CONVERT
+  C:03CAH         SYMBOL        L?0100
+  -------         PROC          L?0099
+  -------         ENDPROC       L?0099
+  C:03CAH         SYMBOL        L?0100
+  -------         PROC          _UPDATE
+  D:0007H         SYMBOL        value
+  -------         DO            
+  D:0006H         SYMBOL        y
+  D:0001H         SYMBOL        d1
+  D:0007H         SYMBOL        d2
+  D:0006H         SYMBOL        d3
+  -------         ENDDO         
+  C:03D0H         LINE#         121
+  C:03D0H         LINE#         123
+  C:03D7H         LINE#         124
+  C:03E1H         LINE#         125
+  C:03E9H         LINE#         126
+  C:03F0H         LINE#         127
+  C:03F3H         LINE#         128
+  C:03F6H         LINE#         129
+  C:03F9H         LINE#         130
+  C:03F9H         LINE#         131
+  C:03FCH         LINE#         132
+  C:03FEH         LINE#         133
+  C:0402H         LINE#         134
+  C:0406H         LINE#         135
+  -------         ENDPROC       _UPDATE
+  -------         PROC          ADCREAD
+  -------         DO            
+BL51 BANKED LINKER/LOCATER V6.11                                                      11/09/2013  21:10:48  PAGE 6
+
+
+  D:0007H         SYMBOL        value
+  -------         ENDDO         
+  C:0508H         LINE#         140
+  C:0508H         LINE#         142
+  C:050AH         LINE#         143
+  C:050CH         LINE#         144
+  C:050FH         LINE#         145
+  C:0511H         LINE#         146
+  C:0513H         LINE#         147
+  C:0515H         LINE#         148
+  C:0515H         LINE#         149
+  -------         ENDPROC       ADCREAD
+  -------         PROC          MOTORCONTROL
+  -------         DO            
+  D:0008H         SYMBOL        i
+  D:0009H         SYMBOL        value
+  D:000AH         SYMBOL        x
+  D:0010H         SYMBOL        x1
+  D:0015H         SYMBOL        x2
+  D:001AH         SYMBOL        y
+  D:0026H         SYMBOL        z
+  D:0031H         SYMBOL        u1
+  D:0036H         SYMBOL        u2
+  C:00EDH         SYMBOL        bkl5
+  C:0136H         SYMBOL        bkl6
+  C:019FH         SYMBOL        bklbkl
+  C:0213H         SYMBOL        bkl1
+  C:025AH         SYMBOL        bkl2
+  C:029FH         SYMBOL        bkl3
+  -------         ENDDO         
+  C:0003H         LINE#         152
+  C:0003H         LINE#         155
+  C:0015H         LINE#         156
+  C:0027H         LINE#         157
+  C:0039H         LINE#         158
+  C:004BH         LINE#         159
+  C:005DH         LINE#         160
+  C:006FH         LINE#         161
+  C:0081H         LINE#         163
+  C:0081H         LINE#         165
+  C:0085H         LINE#         166
+  C:008EH         LINE#         167
+  C:0092H         LINE#         168
+  C:0095H         LINE#         169
+  C:0095H         LINE#         170
+  C:0095H         LINE#         171
+  C:0098H         LINE#         172
+  C:00A1H         LINE#         173
+  C:00A5H         LINE#         174
+  C:00A9H         LINE#         175
+  C:00ACH         LINE#         176
+  C:00AEH         LINE#         177
+  C:00B2H         LINE#         178
+  C:00BBH         LINE#         180
+  C:00C8H         LINE#         181
+  C:00CAH         LINE#         182
+  C:00CCH         LINE#         183
+BL51 BANKED LINKER/LOCATER V6.11                                                      11/09/2013  21:10:48  PAGE 7
+
+
+  C:00CEH         LINE#         184
+  C:00D4H         LINE#         185
+  C:00D7H         LINE#         186
+  C:00DBH         LINE#         187
+  C:00DEH         LINE#         188
+  C:00E0H         LINE#         189
+  C:00E4H         LINE#         190
+  C:00EDH         LINE#         191
+  C:00EDH         LINE#         192
+  C:00F1H         LINE#         193
+  C:00FEH         LINE#         194
+  C:00FEH         LINE#         195
+  C:0101H         LINE#         196
+  C:0103H         LINE#         197
+  C:0103H         LINE#         199
+  C:0103H         LINE#         200
+  C:0103H         LINE#         202
+  C:0111H         LINE#         203
+  C:0113H         LINE#         204
+  C:0115H         LINE#         205
+  C:0117H         LINE#         206
+  C:0119H         LINE#         207
+  C:011DH         LINE#         208
+  C:0121H         LINE#         209
+  C:0124H         LINE#         210
+  C:0127H         LINE#         211
+  C:0129H         LINE#         212
+  C:012DH         LINE#         213
+  C:0136H         LINE#         214
+  C:0136H         LINE#         215
+  C:013AH         LINE#         216
+  C:0148H         LINE#         217
+  C:0148H         LINE#         218
+  C:014BH         LINE#         219
+  C:014DH         LINE#         220
+  C:014DH         LINE#         222
+  C:014DH         LINE#         223
+  C:014DH         LINE#         226
+  C:014DH         LINE#         229
+  C:015AH         LINE#         230
+  C:015CH         LINE#         231
+  C:015EH         LINE#         232
+  C:0160H         LINE#         233
+  C:0164H         LINE#         234
+  C:0167H         LINE#         235
+  C:0167H         LINE#         236
+  C:016AH         LINE#         237
+  C:0173H         LINE#         238
+  C:0177H         LINE#         239
+  C:017AH         LINE#         240
+  C:017CH         LINE#         241
+  C:0180H         LINE#         242
+  C:0189H         LINE#         243
+  C:018DH         LINE#         244
+  C:0190H         LINE#         245
+  C:0192H         LINE#         246
+  C:0196H         LINE#         247
+BL51 BANKED LINKER/LOCATER V6.11                                                      11/09/2013  21:10:48  PAGE 8
+
+
+  C:019FH         LINE#         248
+  C:019FH         LINE#         249
+  C:01A3H         LINE#         250
+  C:01B0H         LINE#         251
+  C:01B0H         LINE#         252
+  C:01B2H         LINE#         253
+  C:01B4H         LINE#         254
+  C:01B4H         LINE#         256
+  C:01B4H         LINE#         257
+  C:01B4H         LINE#         261
+  C:01BDH         LINE#         262
+  C:01BDH         LINE#         263
+  C:01BFH         LINE#         264
+  C:01C1H         LINE#         265
+  C:01C5H         LINE#         266
+  C:01C8H         LINE#         267
+  C:01C8H         LINE#         268
+  C:01C8H         LINE#         269
+  C:01CAH         LINE#         270
+  C:01D3H         LINE#         271
+  C:01D7H         LINE#         272
+  C:01DBH         LINE#         273
+  C:01DEH         LINE#         274
+  C:01DEH         LINE#         275
+  C:01E0H         LINE#         276
+  C:01E4H         LINE#         277
+  C:01EDH         LINE#         282
+  C:01FAH         LINE#         283
+  C:01FEH         LINE#         284
+  C:0201H         LINE#         285
+  C:0204H         LINE#         286
+  C:0206H         LINE#         287
+  C:020AH         LINE#         288
+  C:0213H         LINE#         289
+  C:0213H         LINE#         290
+  C:0215H         LINE#         291
+  C:021BH         LINE#         292
+  C:021DH         LINE#         293
+  C:021FH         LINE#         294
+  C:0223H         LINE#         295
+  C:0230H         LINE#         296
+  C:0230H         LINE#         297
+  C:0232H         LINE#         298
+  C:0234H         LINE#         299
+  C:0234H         LINE#         301
+  C:0234H         LINE#         303
+  C:0234H         LINE#         307
+  C:0241H         LINE#         308
+  C:0244H         LINE#         309
+  C:0248H         LINE#         310
+  C:024BH         LINE#         311
+  C:024DH         LINE#         312
+  C:0251H         LINE#         313
+  C:025AH         LINE#         314
+  C:025AH         LINE#         315
+  C:025CH         LINE#         316
+  C:0262H         LINE#         317
+BL51 BANKED LINKER/LOCATER V6.11                                                      11/09/2013  21:10:48  PAGE 9
+
+
+  C:0264H         LINE#         318
+  C:0268H         LINE#         319
+  C:026CH         LINE#         320
+  C:0279H         LINE#         321
+  C:0279H         LINE#         322
+  C:027BH         LINE#         323
+  C:027DH         LINE#         324
+  C:027DH         LINE#         326
+  C:027DH         LINE#         327
+  C:027DH         LINE#         331
+  C:0286H         LINE#         332
+  C:0289H         LINE#         333
+  C:028DH         LINE#         334
+  C:0290H         LINE#         335
+  C:0292H         LINE#         336
+  C:0296H         LINE#         337
+  C:029FH         LINE#         338
+  C:029FH         LINE#         339
+  C:02A1H         LINE#         340
+  C:02A5H         LINE#         341
+  C:02AEH         LINE#         342
+  C:02AEH         LINE#         343
+  C:02B0H         LINE#         344
+  -------         ENDPROC       MOTORCONTROL
+  -------         PROC          MAIN
+  C:0490H         LINE#         356
+  C:0490H         LINE#         357
+  C:0493H         LINE#         358
+  C:0496H         LINE#         359
+  C:0498H         LINE#         360
+  C:049AH         LINE#         361
+  C:049CH         LINE#         362
+  C:049EH         LINE#         363
+  C:04A0H         LINE#         364
+  C:04A2H         LINE#         365
+  C:04A8H         LINE#         366
+  C:04AAH         LINE#         367
+  C:04ACH         LINE#         368
+  C:04AEH         LINE#         369
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        AUTOMATIC_AIR_CONDITION
+
+  -------         MODULE        ?C?COPY
+  C:0382H         PUBLIC        ?C?COPY
+  -------         ENDMOD        ?C?COPY
+
+  -------         MODULE        ?C?SCDIV
+  C:03A8H         PUBLIC        ?C?SCDIV
+  -------         ENDMOD        ?C?SCDIV
+
+Program Size: data=66.0 xdata=0 code=1327
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
